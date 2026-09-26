@@ -1,0 +1,38 @@
+[
+  {
+    "tool": "start_listening_drill",
+    "args": {
+      "text": "The sun rises in the east and sets in the west. She drinks coffee every morning before work. They walked home together after the game ended.",
+      "title": "黄金用例材料"
+    },
+    "expect": { "outputContains": "已建精听会话" },
+    "note": "v2：切句 3 句、材料落 sys-hub「英语精听/」、会话登记 plugin_kv session；听写句不入题库（会话内即时投影）；无 sys-hub 时返回 NO_SYS_HUB 错误"
+  },
+  {
+    "tool": "start_listening_drill",
+    "args": {
+      "text": "The sun rises in the east and sets in the west. She drinks coffee every morning before work. They walked home together after the game ended.",
+      "title": "黄金用例材料"
+    },
+    "expect": { "outputContains": "已建精听会话" },
+    "note": "同名标题防覆盖：第二个同名会话标题自动追加时间戳（材料文件不互相覆盖，v0.1.0 孤儿题缺陷已修）"
+  },
+  {
+    "tool": "make_word_card",
+    "args": { "word": "coffee", "attribution": "听不出" },
+    "expect": { "outputContains": "填空卡" },
+    "note": "依赖用例 1 的材料在库：生成选择填空卡（题干=挖空原句），归因写入解析；成卡入题库走 SM-2（错词卡才是复习资产）"
+  },
+  {
+    "tool": "make_word_card",
+    "args": { "word": "coffee", "attribution": "听不出" },
+    "expect": { "outputContains": "已存在" },
+    "note": "重复成卡去重跳过（content_hash 去重契约，ADR-102）"
+  },
+  {
+    "tool": "make_word_card",
+    "args": { "word": "coffee", "attribution": "随便" },
+    "expect": { "outputContains": "归因" },
+    "note": "非法归因 fail-closed：必须是 听不出/不认识/拼错"
+  }
+]
